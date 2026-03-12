@@ -31,8 +31,8 @@
   </div>
 </header>
 
-<!-- Hero Banner -->
-<div class="relative h-64 md:h-96 bg-cover bg-center" style="background-image:url('https://picsum.photos/id/1015/2000/800')">
+<!-- Hero Banner – Teri photo background mein + button ka link fixed -->
+<div class="relative h-64 md:h-96 bg-cover bg-center" style="background-image:url('https://i.postimg.cc/R02h1yJ5/Screenshot-20260312-123200.jpg')">
   <div class="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-transparent"></div>
   <div class="absolute bottom-10 left-6 md:left-12 max-w-xl">
     <div class="inline-flex bg-orange-600 text-xs font-bold px-4 py-1 rounded-full mb-3 gap-2 items-center">
@@ -56,10 +56,7 @@
 </main>
 
 <script>
-// ────────────────────────────────────────────────
-//     YAHAN APNE SAARE VIDEOS DAAL DO
-//     60 tak bana sakte ho – copy paste karte jana
-// ────────────────────────────────────────────────
+// Videos array same (tu naye add kar lena)
 const videos = [
   {
     title: "Sexy Desi GF Banged Hard",
@@ -80,20 +77,10 @@ const videos = [
     views: 312000
   },
   // ↑↑↑↑ yahan se copy karke baaki videos add kar do ↑↑↑↑
-  // Example for next one:
-  // {
-  //   title: "Hot Bhabhi MMS Leak 2025",
-  //   image: "https://i.imgur.com/ABC123.jpg",           // ← real thumbnail link
-  //   terabox: "https://terabox.com/s/xyz-your-link",
-  //   views: 98000
-  // },
-  // ... total 60 bana dena
 ];
-
-const itemsPerPage = 12;
+  const itemsPerPage = 12;
 let currentPage = 1;
 
-// URL se page number le lo (?page=2 wagairah)
 const urlParams = new URLSearchParams(window.location.search);
 currentPage = parseInt(urlParams.get('page')) || 1;
 if (currentPage < 1) currentPage = 1;
@@ -108,12 +95,12 @@ function render() {
   const start = (currentPage-1) * itemsPerPage;
   const pageItems = videos.slice(start, start + itemsPerPage);
 
-  document.getElementById('grid').innerHTML = pageItems.map(v => `
+  document.getElementById('grid').innerHTML = pageItems.map(v => 
     <div class="video-card bg-zinc-900 rounded-xl overflow-hidden cursor-pointer" onclick="window.open('${v.terabox}','_blank')">
       <div class="relative">
         <img src="${v.image}" alt="${v.title}" class="w-full aspect-video object-cover"/>
         <div class="badge">TERABOX</div>
-        <div class="duration">12:45</div> <!-- optional -->
+        <div class="duration">12:45</div>
       </div>
       <div class="p-3">
         <h3 class="text-sm font-semibold line-clamp-2 mb-1">${v.title} - Terabox</h3>
@@ -123,7 +110,7 @@ function render() {
         </div>
       </div>
     </div>
-  `).join('');
+  ).join('');
 
   renderPagination();
 }
@@ -133,19 +120,15 @@ function renderPagination() {
   const pag = document.getElementById('pagination');
   pag.innerHTML = '';
 
-  // Prev
-  pag.innerHTML += `<a href="?page=${currentPage-1}" class="page-btn ${currentPage<=1?'disabled':''}">« Prev</a>`;
+  pag.innerHTML += <a href="?page=${currentPage-1}" class="page-btn ${currentPage<=1?'disabled':''}">« Prev</a>;
 
-  // Numbers
   for(let i=1; i<=total; i++){
-    pag.innerHTML += `<a href="?page=${i}" class="page-btn ${i===currentPage?'active':''}">${i}</a>`;
+    pag.innerHTML += <a href="?page=${i}" class="page-btn ${i===currentPage?'active':''}">${i}</a>;
   }
 
-  // Next
-  pag.innerHTML += `<a href="?page=${currentPage+1}" class="page-btn ${currentPage>=total?'disabled':''}">Next »</a>`;
+  pag.innerHTML += <a href="?page=${currentPage+1}" class="page-btn ${currentPage>=total?'disabled':''}">Next »</a>;
 }
 
-// Fake views badhao (real feel)
 setInterval(() => {
   videos.forEach(v => {
     if (Math.random() > 0.45) v.views += Math.floor(Math.random()*40) + 5;
@@ -154,19 +137,15 @@ setInterval(() => {
 }, 9000);
 
 function playFirst() {
-  if (videos[0]) window.open(videos[0].terabox, '_blank');
+  window.open("https://1024terabox.com/s/1kP3PNnGL3riF5V9eMU2Ing", '_blank');
 }
 
-// Search (basic)
 document.getElementById('search')?.addEventListener('input', e => {
-  const term = e.target.value.toLowerCase();
-  // simple filter – full logic chahiye to bata dena
-  console.log("Searching:", term);
+  console.log("Searching:", e.target.value.toLowerCase());
 });
 
 render();
 
-// Browser back/forward support
 window.addEventListener('popstate', () => {
   currentPage = parseInt(new URLSearchParams(window.location.search).get('page')) || 1;
   render();
