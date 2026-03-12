@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TERABOX DESI - Free Desi Videos | player-terabox-video.pics</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    body { font-family: 'Segoe UI', system-ui, sans-serif; background: #0a0a0a; color: white; margin:0; }
+    .video-card:hover { transform: scale(1.04); box-shadow: 0 0 20px rgba(249,115,22,0.4); }
+    .badge { position:absolute; top:8px; right:8px; background:linear-gradient(90deg,#f97316,#ef4444); padding:2px 10px; font-size:10px; border-radius:999px; font-weight:bold; }
+    .duration { position:absolute; bottom:8px; right:8px; background:rgba(0,0,0,0.8); padding:3px 8px; font-size:11px; border-radius:4px; }
+    .pagination a { padding:8px 14px; margin:0 4px; background:#1f2937; border-radius:8px; text-decoration:none; color:white; font-weight:600; }
+    .pagination a.active { background:#f97316; color:black; pointer-events:none; }
+    .pagination a.disabled { opacity:0.4; pointer-events:none; }
+  </style>
+</head>
+<body>
+
+<header class="bg-black sticky top-0 z-50 border-b border-orange-800/50">
+  <div class="max-w-7xl mx-auto px-4 flex justify-between items-center py-4">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 bg-orange-600 rounded-xl flex-center text-2xl font-black">T</div>
+      <span class="text-2xl font-bold text-orange-500">TERABOX</span><span class="text-2xl font-bold">DESI</span>
+    </div>
+    <input id="search" placeholder="Search Bhabhi, MMS, Tamil..." class="hidden md:block w-96 bg-zinc-900 border border-zinc-700 focus:border-orange-500 rounded-full py-2.5 px-5 pl-10 outline-none"/>
+    <button class="bg-orange-600 hover:bg-orange-500 px-5 py-2 rounded-full text-sm font-medium flex-center gap-2">
+      <i class="fa-solid fa-cloud-arrow-down"></i> Terabox
+    </button>
+  </div>
+</header>
+
+<!-- Hero Banner -->
+<div class="relative h-64 md:h-96 bg-cover bg-center" style="background-image:url('https://picsum.photos/id/1015/2000/800')">
+  <div class="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-transparent"></div>
+  <div class="absolute bottom-10 left-6 md:left-12 max-w-xl">
+    <div class="inline-flex bg-orange-600 text-xs font-bold px-4 py-1 rounded-full mb-3 gap-2 items-center">
+      <i class="fa-solid fa-bolt"></i> TRENDING
+    </div>
+    <h1 class="text-3xl md:text-5xl font-bold leading-tight">Beautiful Cute Bhabhi Hot Scene on Terabox</h1>
+    <button onclick="playFirst()" class="mt-6 bg-white text-black font-bold px-8 py-4 rounded-full flex items-center gap-3 hover:bg-orange-400 transition">
+      <i class="fa-solid fa-play"></i> WATCH NOW
+    </button>
+  </div>
+</div>
+
+<main class="max-w-7xl mx-auto px-4 py-10">
+  <h2 class="text-3xl font-bold mb-8 flex items-center gap-3">
+    <span class="text-orange-500">🔥</span> Latest Videos
+  </h2>
+
+  <div id="grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4 md:gap-6"></div>
+
+  <div id="pagination" class="pagination flex justify-center flex-wrap mt-12"></div>
+</main>
+
+<script>
+// ────────────────────────────────────────────────
+//     YAHAN APNE SAARE VIDEOS DAAL DO
+//     60 tak bana sakte ho – copy paste karte jana
+// ────────────────────────────────────────────────
+const videos = [
+  {
+    title: "Sexy Desi GF Banged Hard",
+    image: "https://i.postimg.cc/d1g0Qw10/spiral-null-1773288174197.jpg",
+    terabox: "https://1024terabox.com/s/1VxzJJRUZa6DKSi38baHAcQ",
+    views: 245000
+  },
+  {
+    title: "Beautiful Tamil Wife Fucking",
+    image: "https://i.postimg.cc/Njbf91Mx/spiral-null-1773288812270.jpg",
+    terabox: "https://1024terabox.com/s/1V3kncWhG7GwZiYzcHHmPPw",
+    views: 189000
+  },
+  {
+    title: "Thick Mallu Aunty Big Ass",
+    image: "https://i.postimg.cc/cL7dqfwv/spiral-null-1773289046550.jpg",
+    terabox: "https://1024terabox.com/s/1KPPf4Wa4Y1FTLqcQig6zUg",
+    views: 312000
+  },
+  // ↑↑↑↑ yahan se copy karke baaki videos add kar do ↑↑↑↑
+  // Example for next one:
+  // {
+  //   title: "Hot Bhabhi MMS Leak 2025",
+  //   image: "https://i.imgur.com/ABC123.jpg",           // ← real thumbnail link
+  //   terabox: "https://terabox.com/s/xyz-your-link",
+  //   views: 98000
+  // },
+  // ... total 60 bana dena
+];
+
+const itemsPerPage = 12;
+let currentPage = 1;
+
+// URL se page number le lo (?page=2 wagairah)
+const urlParams = new URLSearchParams(window.location.search);
+currentPage = parseInt(urlParams.get('page')) || 1;
+if (currentPage < 1) currentPage = 1;
+
+function formatViews(n) {
+  if (n >= 1e6) return (n/1e6).toFixed(1)+'M';
+  if (n >= 1e3) return Math.floor(n/1e3)+'K';
+  return n;
+}
+
+function render() {
+  const start = (currentPage-1) * itemsPerPage;
+  const pageItems = videos.slice(start, start + itemsPerPage);
+
+  document.getElementById('grid').innerHTML = pageItems.map(v => `
+    <div class="video-card bg-zinc-900 rounded-xl overflow-hidden cursor-pointer" onclick="window.open('${v.terabox}','_blank')">
+      <div class="relative">
+        <img src="${v.image}" alt="${v.title}" class="w-full aspect-video object-cover"/>
+        <div class="badge">TERABOX</div>
+        <div class="duration">12:45</div> <!-- optional -->
+      </div>
+      <div class="p-3">
+        <h3 class="text-sm font-semibold line-clamp-2 mb-1">${v.title} - Terabox</h3>
+        <div class="text-xs text-zinc-400 flex justify-between">
+          <span>${formatViews(v.views)} views</span>
+          <span class="text-orange-400">Download</span>
+        </div>
+      </div>
+    </div>
+  `).join('');
+
+  renderPagination();
+}
+
+function renderPagination() {
+  const total = Math.ceil(videos.length / itemsPerPage);
+  const pag = document.getElementById('pagination');
+  pag.innerHTML = '';
+
+  // Prev
+  pag.innerHTML += `<a href="?page=${currentPage-1}" class="page-btn ${currentPage<=1?'disabled':''}">« Prev</a>`;
+
+  // Numbers
+  for(let i=1; i<=total; i++){
+    pag.innerHTML += `<a href="?page=${i}" class="page-btn ${i===currentPage?'active':''}">${i}</a>`;
+  }
+
+  // Next
+  pag.innerHTML += `<a href="?page=${currentPage+1}" class="page-btn ${currentPage>=total?'disabled':''}">Next »</a>`;
+}
+
+// Fake views badhao (real feel)
+setInterval(() => {
+  videos.forEach(v => {
+    if (Math.random() > 0.45) v.views += Math.floor(Math.random()*40) + 5;
+  });
+  render();
+}, 9000);
+
+function playFirst() {
+  if (videos[0]) window.open(videos[0].terabox, '_blank');
+}
+
+// Search (basic)
+document.getElementById('search')?.addEventListener('input', e => {
+  const term = e.target.value.toLowerCase();
+  // simple filter – full logic chahiye to bata dena
+  console.log("Searching:", term);
+});
+
+render();
+
+// Browser back/forward support
+window.addEventListener('popstate', () => {
+  currentPage = parseInt(new URLSearchParams(window.location.search).get('page')) || 1;
+  render();
+});
+</script>
+</body>
+</html>
