@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+  <!-- Main domain: kandviral.shop -->
+  <url>
+    <loc>https://kandviral.shop/</loc>
+    <lastmod>2026-03-13</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <!-- Second domain: player-terabox-video.pics -->
+  <url>
+    <loc>https://player-terabox-video.pics/</loc>
+    <lastmod>2026-03-13</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- GitHub Pages preview URL (backup) -->
+  <url>
+    <loc>https://ayubkhamp2009-glitch.github.io/my_desi_site12/</loc>
+    <lastmod>2026-03-13</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+</urlset>
